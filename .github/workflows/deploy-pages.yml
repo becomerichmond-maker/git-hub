@@ -33,15 +33,17 @@ jobs:
             downloads/my-life-ledger-android-v1.0.0.apk
             downloads/my-life-ledger-android-v1.0.1.apk
             downloads/my-life-ledger-android-v1.0.2.apk
+            downloads/my-life-ledger-android-v1.0.3.apk
             vendor/cloudbase.full.js
           )
           mkdir -p dist
           touch dist/.nojekyll
           for file in "${files[@]}"; do
             mkdir -p "dist/$(dirname "$file")"
-            curl --fail --location --retry 4 --retry-all-errors               --output "dist/$file" "$base/$file?v=35"
+            curl --fail --location --retry 4 --retry-all-errors \
+              --output "dist/$file" "$base/$file?v=36"
           done
-          grep -q "cloud-bridge.js?v=35" dist/index.html
+          grep -q "cloud-bridge.js?v=36" dist/index.html
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
