@@ -27,7 +27,7 @@ jobs:
           set -euo pipefail
           base="https://aipa-prod-d3g981wwb4f488710-1461594777.tcloudbaseapp.com/life-ledger"
           files=(
-            app.js auth.js business.js cloud-bridge.js cloud-mode.js
+            app.js auth.js business.js cloud-bridge.js cloud-mode.js offline-sync.js
             douyin-import.js douyin.js favicon.svg index.html manifest.webmanifest
             navigation.js pending.js reminder.js settings.js styles.css sw.js tasks.js version.json
             downloads/my-life-ledger-android-v1.0.0.apk
@@ -42,9 +42,9 @@ jobs:
           for file in "${files[@]}"; do
             mkdir -p "dist/$(dirname "$file")"
             curl --fail --location --retry 4 --retry-all-errors \
-              --output "dist/$file" "$base/$file?v=37"
+              --output "dist/$file" "$base/$file?v=38"
           done
-          grep -q "cloud-bridge.js?v=37" dist/index.html
+          grep -q "cloud-bridge.js?v=38" dist/index.html
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
