@@ -42,9 +42,9 @@ jobs:
           for file in "${files[@]}"; do
             mkdir -p "dist/$(dirname "$file")"
             curl --fail --location --retry 4 --retry-all-errors \
-              --output "dist/$file" "$base/$file?v=40"
+              --output "dist/$file" "$base/$file?v=41"
           done
-          grep -q "cloud-bridge.js?v=40" dist/index.html
+          grep -q "cloud-bridge.js?v=41" dist/index.html
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
