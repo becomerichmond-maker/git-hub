@@ -1,0 +1,55 @@
+name: Deploy Life Ledger to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download verified public build
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://aipa-prod-d3g981wwb4f488710-1461594777.tcloudbaseapp.com/life-ledger"
+          files=(
+            app.js auth.js business.js cloud-bridge.js cloud-mode.js
+            douyin-import.js douyin.js favicon.svg index.html manifest.webmanifest
+            navigation.js pending.js reminder.js settings.js styles.css sw.js tasks.js version.json
+            downloads/my-life-ledger-android-v1.0.0.apk
+            downloads/my-life-ledger-android-v1.0.1.apk
+            downloads/my-life-ledger-android-v1.0.2.apk
+            vendor/cloudbase.full.js
+          )
+          mkdir -p dist
+          touch dist/.nojekyll
+          for file in "${files[@]}"; do
+            mkdir -p "dist/$(dirname "$file")"
+            curl --fail --location --retry 4 --retry-all-errors               --output "dist/$file" "$base/$file?v=35"
+          done
+          grep -q "cloud-bridge.js?v=35" dist/index.html
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
