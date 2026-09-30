@@ -34,6 +34,7 @@ jobs:
             downloads/my-life-ledger-android-v1.0.1.apk
             downloads/my-life-ledger-android-v1.0.2.apk
             downloads/my-life-ledger-android-v1.0.3.apk
+            downloads/my-life-ledger-android-v1.0.4.apk
             vendor/cloudbase.full.js
           )
           mkdir -p dist
@@ -41,9 +42,9 @@ jobs:
           for file in "${files[@]}"; do
             mkdir -p "dist/$(dirname "$file")"
             curl --fail --location --retry 4 --retry-all-errors \
-              --output "dist/$file" "$base/$file?v=36"
+              --output "dist/$file" "$base/$file?v=37"
           done
-          grep -q "cloud-bridge.js?v=36" dist/index.html
+          grep -q "cloud-bridge.js?v=37" dist/index.html
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
